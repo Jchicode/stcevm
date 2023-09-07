@@ -1,0 +1,7 @@
+syntax = "proto3";
+package jchicode.stcevm.stcevm;
+
+option go_package = "github.com/Jchicode/stcevm/x/stcevm/types";
+
+// Msg defines the Msg service.
+service Msg {}
