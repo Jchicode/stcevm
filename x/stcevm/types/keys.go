@@ -17,3 +17,11 @@ const (
 func KeyPrefix(p string) []byte {
 	return []byte(p)
 }
+
+const (
+	DbKey = "Db/value/"
+)
+
+const (
+	KvKey = "Kv/value/"
+)

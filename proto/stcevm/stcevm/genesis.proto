@@ -1,12 +1,16 @@
 syntax = "proto3";
+
 package jchicode.stcevm.stcevm;
 
 import "gogoproto/gogo.proto";
 import "stcevm/stcevm/params.proto";
+import "stcevm/stcevm/kv.proto";
 
 option go_package = "github.com/Jchicode/stcevm/x/stcevm/types";
 
 // GenesisState defines the stcevm module's genesis state.
 message GenesisState {
   Params params = 1 [(gogoproto.nullable) = false];
+  Kv     kv     = 2;
 }
+

@@ -24,7 +24,19 @@ var (
 )
 
 const (
-// this line is used by starport scaffolding # simapp/module/const
+	opWeightMsgCreateKv = "op_weight_msg_kv"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgCreateKv int = 100
+
+	opWeightMsgUpdateKv = "op_weight_msg_kv"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgUpdateKv int = 100
+
+	opWeightMsgDeleteKv = "op_weight_msg_kv"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgDeleteKv int = 100
+
+	// this line is used by starport scaffolding # simapp/module/const
 )
 
 // GenerateGenesisState creates a randomized GenState of the module
@@ -57,6 +69,39 @@ func (am AppModule) RegisterStoreDecoder(_ sdk.StoreDecoderRegistry) {}
 // WeightedOperations returns the all the gov module operations with their respective weights.
 func (am AppModule) WeightedOperations(simState module.SimulationState) []simtypes.WeightedOperation {
 	operations := make([]simtypes.WeightedOperation, 0)
+
+	var weightMsgCreateKv int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCreateKv, &weightMsgCreateKv, nil,
+		func(_ *rand.Rand) {
+			weightMsgCreateKv = defaultWeightMsgCreateKv
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgCreateKv,
+		stcevmsimulation.SimulateMsgCreateKv(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgUpdateKv int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgUpdateKv, &weightMsgUpdateKv, nil,
+		func(_ *rand.Rand) {
+			weightMsgUpdateKv = defaultWeightMsgUpdateKv
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgUpdateKv,
+		stcevmsimulation.SimulateMsgUpdateKv(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgDeleteKv int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgDeleteKv, &weightMsgDeleteKv, nil,
+		func(_ *rand.Rand) {
+			weightMsgDeleteKv = defaultWeightMsgDeleteKv
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgDeleteKv,
+		stcevmsimulation.SimulateMsgDeleteKv(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
 
 	// this line is used by starport scaffolding # simapp/module/operation
 

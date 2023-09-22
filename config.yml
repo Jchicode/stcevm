@@ -1,21 +1,51 @@
 version: 1
+build:
+  binary: stcevmd
+  proto:
+    path: proto
+    third_party_paths:
+      - third_party/proto
+      - proto_vendor
 accounts:
-- name: alice
+  - name: eduardo
+    coins:
+      - 2000000000000000000000000token
+  - name: aaron
+    coins:
+      - 2000000000000000000000000token
+faucet:
+  name: aaron
   coins:
-  - 20000token
-  - 200000000stake
-- name: bob
-  coins:
-  - 10000token
-  - 100000000stake
+    - 10000token
+  host: 0.0.0.0:4500
 client:
+  vuex:
+    path: vue/src/store
   openapi:
     path: docs/static/openapi.yml
-faucet:
-  name: bob
-  coins:
-  - 5token
-  - 100000stake
+genesis:
+  app_state:
+    crisis:
+      constant_fee:
+        denom: token
+    evm:
+      params:
+        evm_denom: token
+    mint:
+      params:
+        mint_denom: token
+    staking:
+      params:
+        bond_denom: token
+        historical_entries: "10"
+        max_validators: "10"
+        unbonding_time: 300000000000ns
+  chain_id: stcevmnetwork_9000-1
 validators:
-- name: alice
-  bonded: 100000000stake
+  - name: eduardo
+    bonded: 100000000000000000000000token
+    app:
+      evm-rpc:
+        address: 0.0.0.0:8545
+        ws-address: 0.0.0.0:8546
+    home: $HOME/.stcevmd
